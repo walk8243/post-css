@@ -1,4 +1,5 @@
 const autoprefixer  = require('autoprefixer'),
+      cssnano       = require('cssnano'),
       postcss       = require('postcss'),
       precss        = require('precss'),
       fs            = require('fs');
@@ -22,9 +23,10 @@ class Sass {
     var toFile = target.replace(/\.(sass|scss)$/, '.css');
     // console.log(toFile);
     fs.readFile(target, (err, css) => {
-      postcss([precss, autoprefixer])
+      postcss([precss, autoprefixer, cssnano])
         .process(css, { from: target, to: toFile })
         .then(result => {
+          // console.log(result);
           fs.writeFile(toFile, result.css, () => true)
           if ( result.map ) {
             fs.writeFile(`${toFile}.map`, result.map, () => true)
