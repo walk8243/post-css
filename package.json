@@ -1,0 +1,21 @@
+{
+  "name": "post-css",
+  "version": "1.0.0",
+  "description": "PostCSSの自分用のClassの作成",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/walk8243/post-css.git"
+  },
+  "keywords": [],
+  "author": "walk8243 (https://qiita.com/walk8243)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/walk8243/post-css/issues"
+  },
+  "homepage": "https://github.com/walk8243/post-css#readme"
+}
