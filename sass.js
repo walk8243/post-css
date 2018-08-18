@@ -1,14 +1,14 @@
 class Sass {
   constructor(directory = '', filter = new RegExp(/^(?!_).*\.(sass|scss)$/), recursion = true) {
     this.setCondition(directory, filter, recursion);
-    this.target = [];
+    this.targets = [];
   }
 
   async compile() {
-    if(!(Array.isArray(this.target) && this.target.length)) {
+    if(!(Array.isArray(this.targets) && this.targets.length)) {
       await this.setTarget();
     }
-    // console.log(this.target);
+    // console.log(this.targets);
   }
 
   getCondition() {
@@ -41,14 +41,14 @@ class Sass {
   }
 
   getTarget() {
-    return this.target;
+    return this.targets;
   }
   async setTarget() {
     var path = this.directory || '.';
     return this.getTargetList(path)
       .then(targets => {
         // console.log(targets);
-        this.target = targets;
+        this.targets = targets;
       }).catch(error => {
         console.error(error);
       });
