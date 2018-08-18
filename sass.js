@@ -1,5 +1,5 @@
 class Sass {
-  constructor(directory, filter, recursion) {
+  constructor(directory = '', filter = new RegExp(/^(?!_).*\.(sass|scss)$/), recursion = true) {
     this.setTarget(directory, filter, recursion);
   }
 
@@ -10,12 +10,27 @@ class Sass {
       recursion: this.recursion,
     };
   }
-  setTarget(directory = '', filter = '', recursion = false) {
-    if(directory.match(/\/$/)) directory = directory.slice(0, -1);
-    Object.assign(this, {
-      directory: directory,
-      filter: filter,
-      recursion: recursion,
+  setTarget(directory, filter, recursion) {
+    this.setDirectory(directory);
+    this.setFilter(filter);
+    this.setRecursion(recursion);
+  }
+  setDirectory(directory) {
+    if(directory == null) {
+      directory = '';
+    } else if(directory.match(/\/$/)) {
+      directory = directory.slice(0, -1);
+    }
+    this.directory = directory;
+  }
+  setFilter(filter) {
+    if(filter == null) filter = new RegExp(/^(?!_).*\.(sass|scss)$/);
+    this.filter = filter;
+  }
+  setRecursion(recursion) {
+    if(recursion == null) recursion = true;
+    this.recursion = recursion;
+  }
     });
   }
 }
