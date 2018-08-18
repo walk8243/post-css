@@ -32,6 +32,44 @@ class Sass {
     if(recursion == null) recursion = true;
     this.recursion = recursion;
   }
+
+  getTarget() {
+    return this.target;
+  }
+  setTarget() {
+    var path = this.directory || '.';
+    this.getTargetList(path)
+      .then(targets => {
+        console.log(targets);
+        this.target = targets;
+      }).catch(error => {
+        console.error(error);
+      });
+  }
+
+  getTargetList(path) {
+    var targetList = [];
+
+    return new Promise((resolve, reject) => {
+      fs.readdir(path, async (err, files) => {
+        if(err) return reject(err);
+
+        for(let file of files) {
+          let stat = fs.statSync(path+'/'+file);
+          if(stat.isFile()) {
+            if(file.match(this.filter)) {
+              // console.log(path+'/'+file, 'ok');
+              targetList.push(path+'/'+file);
+            } else {
+              // console.log(path+'/'+file, 'fail');
+            }
+          } else if(stat.isDirectory() && this.recursion) {
+            // console.log(path+'/'+file);
+            Array.prototype.push.apply(targetList, await this.getTargetList(path+'/'+file));
+          }
+        }
+        resolve(targetList);
+      });
     });
   }
 }
