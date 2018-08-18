@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/walk8243/post-css/issues"
   },
-  "homepage": "https://github.com/walk8243/post-css#readme"
+  "homepage": "https://github.com/walk8243/post-css#readme",
+  "dependencies": {
+    "autoprefixer": "^9.1.1",
+    "postcss": "^7.0.2",
+    "precss": "^3.1.2"
+  }
 }

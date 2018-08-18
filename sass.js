@@ -1,3 +1,8 @@
+const autoprefixer  = require('autoprefixer'),
+      postcss       = require('postcss'),
+      precss        = require('precss'),
+      fs            = require('fs');
+
 class Sass {
   constructor(directory = '', filter = new RegExp(/^(?!_).*\.(sass|scss)$/), recursion = true) {
     this.setCondition(directory, filter, recursion);
@@ -9,6 +14,23 @@ class Sass {
       await this.setTarget();
     }
     // console.log(this.targets);
+    for(let target of this.targets) {
+      this.postcss(target);
+    }
+  }
+  postcss(target) {
+    var toFile = target.replace(/\.(sass|scss)$/, '.css');
+    // console.log(toFile);
+    fs.readFile(target, (err, css) => {
+      postcss([precss, autoprefixer])
+        .process(css, { from: target, to: toFile })
+        .then(result => {
+          fs.writeFile(toFile, result.css, () => true)
+          if ( result.map ) {
+            fs.writeFile(`${toFile}.map`, result.map, () => true)
+          }
+        });
+    });
   }
 
   getCondition() {
