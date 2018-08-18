@@ -1,16 +1,17 @@
 class Sass {
   constructor(directory = '', filter = new RegExp(/^(?!_).*\.(sass|scss)$/), recursion = true) {
-    this.setTarget(directory, filter, recursion);
+    this.setCondition(directory, filter, recursion);
+  }
   }
 
-  getTarget() {
+  getCondition() {
     return {
       directory: this.directory,
       filter: this.filter,
       recursion: this.recursion,
     };
   }
-  setTarget(directory, filter, recursion) {
+  setCondition(directory, filter, recursion) {
     this.setDirectory(directory);
     this.setFilter(filter);
     this.setRecursion(recursion);
