@@ -2,9 +2,8 @@
   "name": "post-css",
   "version": "1.0.0",
   "description": "PostCSSの自分用のClassの作成",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "start": "node index",
     "test": "mocha"
   },
   "repository": {
