@@ -125,6 +125,10 @@ class Sass {
       });
     });
   }
+
+  static getPrevDir(path) {
+    return path.replace(new RegExp('\\/[^\\/]*$'), '');
+  }
 }
 
 module.exports = Sass;
