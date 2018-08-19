@@ -20,17 +20,29 @@ class Sass {
     }
   }
   postcss(target) {
-    var toFile = target.replace(/\.(sass|scss)$/, '.css');
-    // console.log(toFile);
+    var output = target.replace(new RegExp(`^${this.srcDir || '.'}\\/`), `${this.destDir || '.'}/`).replace(/\.(sass|scss)$/, '.css');
+    // console.log(output);
     fs.readFile(target, (err, css) => {
+      if(err) throw err;
       postcss([precss, autoprefixer, cssnano])
-        .process(css, { from: target, to: toFile })
+        .process(css, { from: target, to: output })
         .then(result => {
           // console.log(result);
-          fs.writeFile(toFile, result.css, () => true)
-          if ( result.map ) {
-            fs.writeFile(`${toFile}.map`, result.map, () => true)
-          }
+          return new Promise((resolve, reject) => {
+            fs.writeFile(output, result.css, err => {
+              if(err) return reject(err);
+              resolve();
+            });
+          }).then(() => {
+            if(result.map) {
+              fs.writeFile(`${output}.map`, result.map, err => {
+                if(err) return reject(err);
+                resolve();
+              });
+            }
+          });
+        }).catch((error) => {
+          console.error(error);
         });
     });
   }
