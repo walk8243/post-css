@@ -5,8 +5,8 @@ const autoprefixer  = require('autoprefixer'),
       fs            = require('fs');
 
 class Sass {
-  constructor(directory = '', filter = new RegExp(/^(?!_).*\.(sass|scss)$/), recursion = true) {
-    this.setCondition(directory, filter, recursion);
+  constructor(srcDir = 'src/', destDir = 'dest/', filter = new RegExp(/^(?!_).*\.(sass|scss)$/), recursion = true) {
+    this.setCondition(srcDir, destDir, filter, recursion);
     this.targets = [];
   }
 
@@ -37,23 +37,33 @@ class Sass {
 
   getCondition() {
     return {
-      directory: this.directory,
+      srcDir: this.srcDir,
+      destDir: this.destDir,
       filter: this.filter,
       recursion: this.recursion,
     };
   }
-  setCondition(directory, filter, recursion) {
-    this.setDirectory(directory);
+  setCondition(srcDir, destDir, filter, recursion) {
+    this.setSrcDir(srcDir);
+    this.setDestDir(destDir);
     this.setFilter(filter);
     this.setRecursion(recursion);
   }
-  setDirectory(directory) {
-    if(directory == null) {
-      directory = '';
-    } else if(directory.match(/\/$/)) {
-      directory = directory.slice(0, -1);
+  setSrcDir(srcDir) {
+    if(srcDir == null) {
+      srcDir = '';
+    } else if(srcDir.match(/\/$/)) {
+      srcDir = srcDir.slice(0, -1);
     }
-    this.directory = directory;
+    this.srcDir = srcDir;
+  }
+  setDestDir(destDir) {
+    if(destDir == null) {
+      destDir = '';
+    } else if(destDir.match(/\/$/)) {
+      destDir = destDir.slice(0, -1);
+    }
+    this.destDir = destDir;
   }
   setFilter(filter) {
     if(filter == null) filter = new RegExp(/^(?!_).*\.(sass|scss)$/);
@@ -68,7 +78,7 @@ class Sass {
     return this.targets;
   }
   async setTarget() {
-    var path = this.directory || '.';
+    var path = this.srcDir || '.';
     return this.getTargetList(path)
       .then(targets => {
         // console.log(targets);
