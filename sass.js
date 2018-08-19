@@ -22,6 +22,8 @@ class Sass {
   postcss(target) {
     var output = target.replace(new RegExp(`^${this.srcDir || '.'}\\/`), `${this.destDir || '.'}/`).replace(/\.(sass|scss)$/, '.css');
     // console.log(output);
+    Sass.mkdir(Sass.getPrevDir(output));
+
     fs.readFile(target, (err, css) => {
       if(err) throw err;
       postcss([precss, autoprefixer, cssnano])
@@ -126,6 +128,13 @@ class Sass {
     });
   }
 
+  static mkdir(dirPath) {
+    if(fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory()) return true;
+    if(Sass.mkdir(Sass.getPrevDir(dirPath))) {
+      fs.mkdirSync(dirPath);
+      return true;
+    }
+  }
   static getPrevDir(path) {
     return path.replace(new RegExp('\\/[^\\/]*$'), '');
   }
